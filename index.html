@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rakit — Pembuat Website</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Fraunces:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e9ebf0;--panel:#fff;--ink:#1b2433;--line:#d5d9e2;--muted:#667085;--ac:#2f5bff;--acink:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151c;--panel:#1a1e28;--ink:#e8ebf2;--line:#2b3140;--muted:#9aa3b5;--ac:#6f8dff}}
+:root[data-theme="dark"]{--bg:#12151c;--panel:#1a1e28;--ink:#e8ebf2;--line:#2b3140;--muted:#9aa3b5;--ac:#6f8dff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 'Bricolage Grotesque',system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+.app{display:grid;grid-template-rows:auto 1fr;height:100%}
+.top{display:flex;gap:12px;align-items:center;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.logo{font-weight:800;font-size:18px;letter-spacing:-.02em;margin-right:auto}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:none;padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.btn2{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 12px;cursor:pointer}
+.btn2:hover{border-color:var(--ink)}
+.btn2.pri{background:var(--ac);border-color:var(--ac);color:var(--acink);font-weight:600}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.main{display:grid;grid-template-columns:230px 1fr 270px;min-height:0}
+.side{background:var(--panel);overflow:auto;padding:14px}
+.side.l{border-right:1px solid var(--line)}
+.side.r{border-left:1px solid var(--line)}
+.side h2{font-size:13px;margin:0 0 10px;font-weight:800}
+.side h2:not(:first-child){margin-top:22px}
+.lib{display:grid;gap:6px}
+.lib button{text-align:left;border:1px solid var(--line);background:none;border-radius:8px;padding:9px 11px;cursor:pointer}
+.lib button:hover{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 8%,transparent)}
+.lib small{display:block;color:var(--muted)}
+.stage{overflow:auto;padding:22px}
+.frame{container-type:inline-size;margin:0 auto;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);min-height:60vh;transition:max-width .25s;width:100%}
+.frame.tablet{max-width:768px}.frame.mobile{max-width:390px}
+.blk{position:relative;cursor:pointer}
+.blk:hover{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--ac) 40%,transparent)}
+.blk.on{box-shadow:inset 0 0 0 2px var(--ac)}
+[data-e]{outline:none}[data-e]:focus{background:rgba(120,140,255,.14);border-radius:3px}
+.empty{padding:90px 24px;text-align:center;color:#667085;font-family:'Bricolage Grotesque',system-ui}
+.fld{display:grid;gap:4px;margin-bottom:12px}
+.fld label{color:var(--muted);font-size:12px}
+.fld input[type=text],.fld select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.fld input[type=color]{width:100%;height:34px;border:1px solid var(--line);border-radius:8px;padding:2px;background:var(--bg)}
+.row{display:flex;gap:6px;flex-wrap:wrap}
+.row .btn2{flex:1}
+.hint{color:var(--muted)}
+dialog{width:min(760px,94vw);border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);padding:16px}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+dialog textarea{width:100%;height:55vh;font:12px/1.5 ui-monospace,Menlo,monospace;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px}
+@media (max-width:900px){.main{grid-template-columns:1fr;grid-template-rows:auto 60vh auto;overflow:auto}.side.l,.side.r{border:0}.lib{grid-template-columns:repeat(2,1fr)}}
+@media (prefers-reduced-motion:reduce){.frame{transition:none}}
+.themes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.th{border:1px solid var(--line);background:none;border-radius:8px;padding:6px;cursor:pointer;font-size:12px}
+.th[aria-pressed="true"]{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac)}
+.th i{display:flex;height:22px;border-radius:5px;overflow:hidden;margin-bottom:4px}.th i b{flex:1}
+.cat{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;max-height:62vh;overflow:auto;padding:2px}
+.ci{border:1px solid var(--line);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.ci p{margin:0}.thumb{height:130px;border-radius:6px;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line)}
+</style>
+<style id="sbcss">
+.sb{font-family:var(--font);line-height:1.6;color:#1b2433;background:#fff}
+.sb *{box-sizing:border-box}
+.sb h1{font-size:clamp(2rem,6cqw,3.6rem);line-height:1.08;margin:0 0 16px;letter-spacing:-.02em}
+.sb h2{font-size:clamp(1.5rem,4cqw,2.3rem);line-height:1.15;margin:0 0 14px;letter-spacing:-.01em}
+.sb h3{margin:0 0 6px;font-size:1.15rem}
+.sb p{margin:0 0 14px;max-width:62ch}
+.sb a{color:inherit}
+.sb .btn{display:inline-block;background:var(--accent);color:#fff;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:600;margin:6px 10px 0 0}
+.sb .btn.alt{background:transparent;color:inherit;border:2px solid currentColor}
+.sb .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.sb .nav nav{display:flex;gap:22px}
+.sb .nav .btn{margin:0;padding:9px 16px}
+.sb .g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px;align-items:stretch}
+.sb .two{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center}
+.sb .card{border:1px solid rgba(128,128,128,.35);border-radius:12px;padding:24px;background:rgba(255,255,255,.04);display:flex;flex-direction:column;align-items:flex-start}
+.sb .card .btn{margin-top:auto}
+.sb .price{font-size:2rem;font-weight:800;margin:0 0 8px}
+.sb .shape{aspect-ratio:4/3;border-radius:18px;background:var(--accent);opacity:.9;position:relative;overflow:hidden}
+.sb .shape:after{content:"";position:absolute;width:55%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.28);right:-8%;bottom:-12%}
+.sb .quote{font-size:clamp(1.3rem,3.6cqw,2rem);line-height:1.3;max-width:30ch;margin:0 auto 14px}
+.sb .field{display:block;width:100%;max-width:420px;padding:11px 12px;margin:0 0 10px;border:1px solid rgba(128,128,128,.5);border-radius:8px;background:rgba(255,255,255,.7);color:#1b2433;font:inherit}
+.sb .small{font-size:.9rem;opacity:.8;margin:0}
+@container (max-width:640px){.sb .g3,.sb .two{grid-template-columns:1fr}.sb .nav nav{display:none}.sb section{padding-left:5%!important;padding-right:5%!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="logo">Rakit</div>
+    <div class="seg" role="group" aria-label="Ukuran layar">
+      <button data-dev="desktop" aria-pressed="true">Desktop</button>
+      <button data-dev="tablet" aria-pressed="false">Tablet</button>
+      <button data-dev="mobile" aria-pressed="false">Ponsel</button>
+    </div>
+    <button class="btn2" id="cat">Katalog template</button>
+    <button class="btn2" id="starter">Mulai dari contoh</button>
+    <button class="btn2" id="clear">Kosongkan</button>
+    <button class="btn2" id="prev">Pratinjau</button>
+    <button class="btn2" id="export">Lihat kode</button>
+    <button class="btn2 pri" id="dl">Unduh website (.html)</button>
+  </header>
+  <div class="main">
+    <aside class="side l">
+      <h2>Tambah blok</h2>
+      <div class="lib" id="lib"></div>
+    </aside>
+    <main class="stage"><div class="frame sb" id="frame"><div id="canvas"></div></div></main>
+    <aside class="side r">
+      <h2>Tema</h2>
+      <div class="themes" id="themes"></div>
+      <h2>Pengaturan situs</h2>
+      <div class="fld"><label for="stitle">Judul situs</label><input type="text" id="stitle"></div>
+      <div class="fld"><label for="sacc">Warna tombol dan aksen</label><input type="color" id="sacc"></div>
+      <div class="fld"><label for="sfont">Huruf</label>
+        <select id="sfont"><option>Bricolage Grotesque</option><option>Fraunces</option><option>Sistem</option></select></div>
+      <h2>Blok terpilih</h2>
+      <div id="props"></div>
+    </aside>
+  </div>
+</div>
+<dialog id="dlg">
+  <div class="row" style="margin-bottom:10px;align-items:center">
+    <strong style="flex:3">Kode HTML situs</strong>
+    <button class="btn2 pri" id="dl2">Unduh .html</button>
+    <button class="btn2" id="copy">Salin kode</button>
+    <button class="btn2" id="close">Tutup</button>
+  </div>
+  <textarea id="code" readonly aria-label="Kode HTML"></textarea>
+  <p class="hint">Simpan sebagai file <b>index.html</b>, lalu buka di browser atau unggah ke hosting.</p>
+</dialog>
+<dialog id="cdlg">
+  <div class="row" style="margin-bottom:10px;align-items:center">
+    <strong style="flex:3">Katalog template</strong>
+    <button class="btn2" id="cclose">Tutup</button>
+  </div>
+  <p class="hint" style="margin-top:0">Memilih template akan mengganti halaman yang sedang dikerjakan. Semua teks tetap bisa diedit.</p>
+  <div class="cat" id="catlist"></div>
+</dialog>
+
+<script>
+const FONTS={'Bricolage Grotesque':"'Bricolage Grotesque',system-ui,sans-serif",'Fraunces':"'Fraunces',Georgia,serif",'Sistem':"system-ui,-apple-system,'Segoe UI',sans-serif"};
+const E=(t,c='')=>`<${t} data-e>${c}</${t}>`;
+const T={
+ nav:{n:'Navigasi',d:'Logo dan menu',bg:'#ffffff',color:'#1b2433',pad:18,align:'left',
+  html:`<div class="nav"><strong data-e>NamaBrand</strong><nav><a href="#" data-e>Beranda</a><a href="#" data-e>Layanan</a><a href="#" data-e>Kontak</a></nav><a class="btn" href="#" data-e>Hubungi kami</a></div>`},
+ hero:{n:'Hero',d:'Judul besar dan tombol',bg:'#f3f5ff',color:'#1b2433',pad:96,align:'left',
+  html:`<h1 data-e>Bangun kehadiran online bisnis Anda</h1><p data-e>Tulis satu kalimat jelas tentang apa yang Anda tawarkan dan untuk siapa. Klik teks ini untuk mengubahnya.</p><a class="btn" href="#" data-e>Mulai sekarang</a><a class="btn alt" href="#" data-e>Pelajari lebih lanjut</a>`},
+ features:{n:'Fitur',d:'Tiga keunggulan',bg:'#ffffff',color:'#1b2433',pad:72,align:'left',
+  html:`<h2 data-e>Kenapa memilih kami</h2><div class="g3"><div class="card"><h3 data-e>Cepat</h3><p data-e>Jelaskan keunggulan pertama dalam satu atau dua kalimat.</p></div><div class="card"><h3 data-e>Terjangkau</h3><p data-e>Jelaskan keunggulan kedua dengan bahasa yang sederhana.</p></div><div class="card"><h3 data-e>Terpercaya</h3><p data-e>Jelaskan keunggulan ketiga dan buktinya.</p></div></div>`},
+ about:{n:'Tentang',d:'Teks dan bentuk dekoratif',bg:'#ffffff',color:'#1b2433',pad:72,align:'left',
+  html:`<div class="two"><div><h2 data-e>Tentang kami</h2><p data-e>Ceritakan siapa Anda, sejak kapan berdiri, dan apa yang membuat Anda berbeda. Cerita singkat yang jujur lebih meyakinkan daripada klaim besar.</p><a class="btn" href="#" data-e>Kenali tim kami</a></div><div class="shape"></div></div>`},
+ pricing:{n:'Harga',d:'Tiga paket',bg:'#f6f7fa',color:'#1b2433',pad:72,align:'left',
+  html:`<h2 data-e>Pilih paket</h2><div class="g3"><div class="card"><h3 data-e>Dasar</h3><p class="price" data-e>Rp99rb</p><p data-e>Untuk memulai.</p><a class="btn" href="#" data-e>Pilih</a></div><div class="card"><h3 data-e>Bisnis</h3><p class="price" data-e>Rp249rb</p><p data-e>Untuk tim yang bertumbuh.</p><a class="btn" href="#" data-e>Pilih</a></div><div class="card"><h3 data-e>Pro</h3><p class="price" data-e>Rp499rb</p><p data-e>Untuk kebutuhan lengkap.</p><a class="btn" href="#" data-e>Pilih</a></div></div>`},
+ quote:{n:'Testimoni',d:'Kutipan pelanggan',bg:'#1b2433',color:'#ffffff',pad:80,align:'center',
+  html:`<p class="quote" data-e>“Tulis kutipan pelanggan yang menjelaskan hasil nyata yang mereka dapatkan.”</p><p class="small" data-e>Nama Pelanggan, Jabatan</p>`},
+ cta:{n:'Ajakan bertindak',d:'Judul dan satu tombol',bg:'#2f5bff',color:'#ffffff',pad:72,align:'center',
+  html:`<h2 data-e>Siap memulai?</h2><p data-e style="margin-inline:auto">Satu kalimat yang menjelaskan langkah berikutnya.</p><a class="btn alt" href="#" data-e>Daftar gratis</a>`},
+ contact:{n:'Kontak',d:'Formulir sederhana',bg:'#ffffff',color:'#1b2433',pad:72,align:'left',
+  html:`<h2 data-e>Hubungi kami</h2><p data-e>Kami membalas dalam satu hari kerja.</p><input class="field" placeholder="Nama"><input class="field" placeholder="Email"><textarea class="field" rows="3" placeholder="Pesan"></textarea><a class="btn" href="#" data-e>Kirim pesan</a>`},
+ footer:{n:'Footer',d:'Hak cipta',bg:'#11151d',color:'#c9cfdb',pad:32,align:'center',
+  html:`<p class="small" style="margin-inline:auto" data-e>© 2026 NamaBrand. Semua hak dilindungi.</p>`}
+};
+const uid=()=>Math.random().toString(36).slice(2,8);
+const ROLE={nav:'paper',hero:'soft',features:'paper',about:'paper',pricing:'soft',quote:'dark',cta:'accent',contact:'paper',footer:'deep'};
+const THEMES={
+ samudra:{n:'Samudra',a:'#2f5bff',f:'Bricolage Grotesque',paper:['#ffffff','#1b2433'],soft:['#f3f5ff','#1b2433'],dark:['#1b2433','#ffffff'],deep:['#11151d','#c9cfdb']},
+ hutan:{n:'Hutan',a:'#1f8a5b',f:'Fraunces',paper:['#ffffff','#14261e'],soft:['#eef6f1','#14261e'],dark:['#12372a','#ffffff'],deep:['#0b2219','#bfd4c9']},
+ senja:{n:'Senja',a:'#e8590c',f:'Bricolage Grotesque',paper:['#ffffff','#2b1a14'],soft:['#fff1e8','#2b1a14'],dark:['#2b1a14','#ffffff'],deep:['#1d110d','#e3cfc4']},
+ malam:{n:'Malam',a:'#7c9cff',f:'Bricolage Grotesque',paper:['#0f1320','#e8ebf2'],soft:['#171c2e','#e8ebf2'],dark:['#202741','#ffffff'],deep:['#080a14','#9aa3b5']},
+ mawar:{n:'Mawar',a:'#c2255c',f:'Fraunces',paper:['#ffffff','#2a1420'],soft:['#fdeff4','#2a1420'],dark:['#3b0f24','#ffffff'],deep:['#290a19','#e2c3d0']},
+ mono:{n:'Mono',a:'#111111',f:'Sistem',paper:['#ffffff','#111111'],soft:['#f1f1f1','#111111'],dark:['#111111','#ffffff'],deep:['#000000','#bdbdbd']}
+};
+const cr=(type,th)=>{const r=ROLE[type],t=THEMES[th||S.site.theme]||THEMES.samudra;return r==='accent'?[th?t.a:S.site.accent,'#ffffff']:t[r]};
+const mk=k=>{const c=cr(k);return {id:uid(),type:k,bg:c[0],color:c[1],pad:T[k].pad,align:T[k].align,html:T[k].html}};
+const TPL=[
+ {n:'Kedai Kopi',d:'Toko lokal dengan daftar harga',th:'senja',b:['nav','hero','features','pricing','contact','footer'],r:[['NamaBrand','Kopi Senja'],['Bangun kehadiran online bisnis Anda','Kopi sangrai segar, diantar ke rumah'],['Tulis satu kalimat jelas tentang apa yang Anda tawarkan dan untuk siapa. Klik teks ini untuk mengubahnya.','Biji pilihan petani lokal, disangrai setiap pagi dan dikirim di hari yang sama.'],['Kenapa memilih kami','Kenapa kopi kami beda'],['Cepat','Sangrai harian'],['Terjangkau','Harga petani'],['Terpercaya','Kirim sehari']]},
+ {n:'Portofolio',d:'Profil pribadi desainer atau penulis',th:'mono',b:['nav','hero','about','features','contact','footer'],r:[['NamaBrand','Rina Putri'],['Bangun kehadiran online bisnis Anda','Desainer yang mengubah ide menjadi produk'],['Kenapa memilih kami','Layanan saya'],['Tentang kami','Tentang saya'],['Kenali tim kami','Lihat karya saya'],['Hubungi kami','Mari berkolaborasi']]},
+ {n:'Studio Jasa',d:'Agensi atau konsultan dengan paket harga',th:'samudra',b:['nav','hero','features','pricing','quote','cta','footer'],r:[['NamaBrand','Studio Lintas'],['Bangun kehadiran online bisnis Anda','Strategi digital yang terukur untuk bisnis Anda']]},
+ {n:'Peluncuran Aplikasi',d:'Landing page produk, tema gelap',th:'malam',b:['nav','hero','features','quote','cta','footer'],r:[['NamaBrand','Catatku'],['Bangun kehadiran online bisnis Anda','Catatan yang secepat pikiran Anda'],['Siap memulai?','Coba Catatku hari ini'],['Daftar gratis','Unduh aplikasi']]},
+ {n:'Katering Sehat',d:'Usaha makanan dengan paket langganan',th:'hutan',b:['nav','hero','about','pricing','contact','footer'],r:[['NamaBrand','Dapur Hijau'],['Bangun kehadiran online bisnis Anda','Katering sehat untuk kantor dan keluarga'],['Pilih paket','Paket langganan'],['Tentang kami','Dapur kami']]}
+];
+let S={site:{title:'Situs Saya',accent:'#2f5bff',font:'Bricolage Grotesque',theme:'samudra'},blocks:[],sel:null};
+const $=id=>document.getElementById(id);
+const canvas=$('canvas'),frame=$('frame'),props=$('props');
+
+function save(){try{localStorage.setItem('rakit-v1',JSON.stringify({site:S.site,blocks:S.blocks}))}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem('rakit-v1')||'null');if(d&&d.blocks){S.site=d.site;S.blocks=d.blocks;return true}}catch(e){}return false}
+function starter(){S.blocks=['nav','hero','features','cta','footer'].map(mk);S.sel=null}
+
+const sty=b=>`background:${b.bg};color:${b.color};padding:${b.pad}px 6%;text-align:${b.align}`;
+function applySite(){
+  frame.style.setProperty('--accent',S.site.accent);
+  frame.style.setProperty('--font',FONTS[S.site.font]||FONTS['Sistem']);
+  document.querySelectorAll('.th').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===S.site.theme));
+  $('stitle').value=S.site.title;$('sacc').value=S.site.accent;$('sfont').value=S.site.font;
+}
+function render(){
+  canvas.innerHTML=S.blocks.length?S.blocks.map(b=>`<section class="blk${b.id===S.sel?' on':''}" data-id="${b.id}" style="${sty(b)}">${b.html}</section>`).join(''):`<div class="empty"><h2>Halaman masih kosong</h2><p>Pilih blok di panel kiri untuk mulai menyusun halaman.</p></div>`;
+  canvas.querySelectorAll('[data-e]').forEach(e=>e.contentEditable='true');
+  drawProps();save();
+}
+const cur=()=>S.blocks.find(b=>b.id===S.sel);
+function drawProps(){
+  const b=cur();
+  if(!b){props.innerHTML='<p class="hint">Klik sebuah blok di halaman untuk mengubah warna, jarak, dan urutannya. Klik teks di dalam blok untuk menyuntingnya.</p>';return}
+  props.innerHTML=`<p style="margin:0 0 12px"><b>${T[b.type].n}</b></p>
+  <div class="fld"><label for="pbg">Warna latar</label><input type="color" id="pbg" value="${b.bg}"></div>
+  <div class="fld"><label for="pcl">Warna teks</label><input type="color" id="pcl" value="${b.color}"></div>
+  <div class="fld"><label for="ppd">Jarak atas dan bawah (${b.pad}px)</label><input type="range" id="ppd" min="12" max="160" value="${b.pad}"></div>
+  <div class="fld"><label for="pal">Perataan teks</label><select id="pal"><option value="left">Kiri</option><option value="center">Tengah</option></select></div>
+  ${/class="g3"/.test(b.html)?'<div class="row" style="margin-bottom:12px"><button class="btn2" data-a="addc">Tambah kartu</button><button class="btn2" data-a="delc">Kurangi kartu</button></div>':''}
+  <div class="row"><button class="btn2" data-a="up">Naik</button><button class="btn2" data-a="down">Turun</button></div>
+  <div class="row" style="margin-top:6px"><button class="btn2" data-a="dup">Gandakan</button><button class="btn2" data-a="del">Hapus</button></div>`;
+  $('pal').value=b.align;
+}
+function select(id){
+  S.sel=id;
+  canvas.querySelectorAll('.blk').forEach(e=>e.classList.toggle('on',e.dataset.id===id));
+  drawProps();
+}
+function live(k,v){
+  const b=cur();if(!b)return;b[k]=v;
+  const el=canvas.querySelector(`[data-id="${b.id}"]`);if(el)el.style.cssText=sty(b);
+  save();
+}
+props.addEventListener('input',e=>{
+  const m={pbg:'bg',pcl:'color',ppd:'pad',pal:'align'}[e.target.id];if(!m)return;
+  live(m,m==='pad'?+e.target.value:e.target.value);
+  if(m==='pad'){e.target.previousElementSibling.textContent=`Jarak atas dan bawah (${e.target.value}px)`}
+});
+props.addEventListener('click',e=>{
+  const a=e.target.dataset.a;if(!a)return;
+  if(a==='addc'||a==='delc'){
+    const b=cur();if(!b)return;
+    const d=document.createElement('div');d.innerHTML=b.html;
+    const g=d.querySelector('.g3');if(!g)return;const n=g.children.length;
+    if(a==='addc'&&n<6)g.appendChild(g.lastElementChild.cloneNode(true));
+    if(a==='delc'&&n>1)g.lastElementChild.remove();
+    b.html=d.innerHTML;render();return;
+  }
+  const i=S.blocks.findIndex(b=>b.id===S.sel);if(i<0)return;
+  if(a==='up'&&i>0)[S.blocks[i-1],S.blocks[i]]=[S.blocks[i],S.blocks[i-1]];
+  if(a==='down'&&i<S.blocks.length-1)[S.blocks[i+1],S.blocks[i]]=[S.blocks[i],S.blocks[i+1]];
+  if(a==='dup'){const c={...S.blocks[i],id:uid()};S.blocks.splice(i+1,0,c);S.sel=c.id}
+  if(a==='del'){S.blocks.splice(i,1);S.sel=null}
+  render();
+});
+canvas.addEventListener('click',e=>{
+  if(e.target.closest('a'))e.preventDefault();
+  const s=e.target.closest('.blk');if(s&&s.dataset.id!==S.sel)select(s.dataset.id);
+});
+canvas.addEventListener('input',e=>{
+  const s=e.target.closest('.blk');if(!s)return;
+  const b=S.blocks.find(x=>x.id===s.dataset.id);
+  if(b){b.html=s.innerHTML.replace(/ contenteditable="true"/g,'');save()}
+});
+$('lib').innerHTML=Object.keys(T).map(k=>`<button data-k="${k}">${T[k].n}<small>${T[k].d}</small></button>`).join('');
+$('lib').addEventListener('click',e=>{
+  const k=e.target.closest('button')?.dataset.k;if(!k)return;
+  const nb=mk(k),i=S.blocks.findIndex(b=>b.id===S.sel);
+  S.blocks.splice(i<0?S.blocks.length:i+1,0,nb);S.sel=nb.id;render();
+  canvas.querySelector(`[data-id="${nb.id}"]`)?.scrollIntoView({block:'nearest',behavior:'smooth'});
+});
+$('stitle').addEventListener('input',e=>{S.site.title=e.target.value;save()});
+$('sacc').addEventListener('input',e=>{S.site.accent=e.target.value;applySite();save()});
+$('sfont').addEventListener('change',e=>{S.site.font=e.target.value;applySite();save()});
+document.querySelectorAll('[data-dev]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('[data-dev]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  frame.classList.remove('tablet','mobile');if(b.dataset.dev!=='desktop')frame.classList.add(b.dataset.dev);
+}));
+$('starter').onclick=()=>{starter();render()};
+$('clear').onclick=()=>{S.blocks=[];S.sel=null;render()};
+
+function buildHTML(){
+  const css=$('sbcss').textContent.replace(/@container/g,'@media');
+  const fam=S.site.font==='Sistem'?'':`<link href="https://fonts.googleapis.com/css2?family=${S.site.font.replace(/ /g,'+')}:wght@400;600;800&display=swap" rel="stylesheet">\n`;
+  const body=S.blocks.map(b=>`<section style="${sty(b)}">${b.html.replace(/ data-e(="")?/g,'')}</section>`).join('\n');
+  const t=S.site.title.replace(/</g,'&lt;');
+  return `<!DOCTYPE html>\n<html lang="id">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>${t}</title>\n${fam}<style>\nbody{margin:0}\n.sb{--accent:${S.site.accent};--font:${FONTS[S.site.font]}}\n${css}</style>\n</head>\n<body>\n<div class="sb">\n${body}\n</div>\n</body>\n</html>`;
+}
+$('export').onclick=()=>{$('code').value=buildHTML();$('copy').textContent='Salin kode';$('dlg').showModal()};
+$('close').onclick=()=>$('dlg').close();
+$('copy').onclick=async()=>{
+  const ta=$('code');ta.select();let ok=false;
+  try{await navigator.clipboard.writeText(ta.value);ok=true}catch(e){try{ok=document.execCommand('copy')}catch(_){}}
+  $('copy').textContent=ok?'Tersalin':'Tekan Ctrl+C untuk menyalin';
+};
+
+$('themes').innerHTML=Object.keys(THEMES).map(k=>{const t=THEMES[k];return `<button class="th" data-t="${k}" aria-pressed="false" title="${t.n}"><i><b style="background:${t.paper[0]}"></b><b style="background:${t.soft[0]}"></b><b style="background:${t.a}"></b><b style="background:${t.dark[0]}"></b></i>${t.n}</button>`}).join('');
+$('themes').addEventListener('click',e=>{
+  const k=e.target.closest('.th')?.dataset.t;if(!k)return;const t=THEMES[k];
+  S.site.theme=k;S.site.accent=t.a;S.site.font=t.f;
+  S.blocks.forEach(b=>{const c=cr(b.type,k);b.bg=c[0];b.color=c[1]});
+  applySite();render();
+});
+$('catlist').innerHTML=TPL.map((t,i)=>`<div class="ci"><div class="thumb">${t.b.map(k=>`<div style="background:${cr(k,t.th)[0]};flex:${k==='hero'?3:k==='nav'||k==='footer'?.6:2}"></div>`).join('')}</div><div><b>${t.n}</b><p class="hint">${t.d}</p></div><button class="btn2 pri" data-i="${i}">Pakai template</button></div>`).join('');
+$('catlist').addEventListener('click',e=>{
+  const i=e.target.dataset.i;if(i==null)return;const t=TPL[i],th=THEMES[t.th];
+  S.site={title:t.r[0][1],accent:th.a,font:th.f,theme:t.th};
+  S.blocks=t.b.map(k=>{const b=mk(k);t.r.forEach(([f,to])=>{b.html=b.html.split(f).join(to)});return b});
+  S.sel=null;applySite();render();$('cdlg').close();
+});
+$('cat').onclick=()=>$('cdlg').showModal();
+$('cclose').onclick=()=>$('cdlg').close();
+const flash=(b,t)=>{const o=b.dataset.o||b.textContent;b.dataset.o=o;b.textContent=t;setTimeout(()=>b.textContent=o,2200)};
+async function download(btn){
+  const slug=(S.site.title||'situs').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'situs';
+  const name=slug+'.html',html=buildHTML();
+  try{
+    const d=window.claude&&claude.use?await claude.use('downloads'):null;
+    if(d){
+      try{await d.save({filename:name,data:html});flash(btn,'Tersimpan: '+name)}
+      catch(e){if(!e||e.code!=='declined'){$('code').value=html;$('dlg').showModal()}}
+      return;
+    }
+  }catch(e){}
+  try{
+    const u=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+    const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(u),3000);flash(btn,'Terunduh: '+name);
+  }catch(err){$('code').value=html;$('dlg').showModal()}
+}
+$('dl').onclick=e=>download(e.currentTarget);
+$('dl2').onclick=e=>download(e.currentTarget);
+$('prev').onclick=()=>{try{window.open(URL.createObjectURL(new Blob([buildHTML()],{type:'text/html'})),'_blank')}catch(e){}};
+
+if(!load())starter();
+S.site.theme=S.site.theme||'samudra';
+applySite();render();
+</script>
+</body>
+</html>
